@@ -1,0 +1,91 @@
+@model List<PackageViewModel>
+
+@{
+    ViewData["Title"] = "Pacotes";
+}
+
+<div class="text-center typing">
+    <h1 class="display-4">Pacotes</h1>
+    <i class="fa-solid fa-user"></i>
+</div>
+
+<div class="d-grid">
+    <a role="button" class="btn btn-orange" asp-controller="Packages" asp-action="Cadastrar">Cadastrar Pacote</a>
+</div>
+
+<div class=" table-responsive-sm">
+<table class="table table-responsive table-dark mt-2" id="PackagesTable">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Titulo</th>
+      <th scope="col">Código</th>
+      <th id="col-weight" scope="col">Peso</th>
+      <th scope="col">Data de Postagem</th>
+      <th scope="col">Entregue</th>
+      <th scope="col"></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+      @if(Model != null && Model.Any())
+            {
+                foreach(var item in Model)
+                {
+                    <tr>
+                      <th scope="row">@item.Id</th>
+                      <td>@item.Title</td>
+                      <td> <p style="font-size:0.6rem; max-width:20ch;" value="@item.Code">@item.Code</p> </td>
+                      <td id="data-weight">@item.Weight grama(s)</td>
+                      <td>@item.PostedAt</td>
+                      @if (item.Delivered == false)
+                        {
+                            <td> <input type="checkbox" disabled/></td>
+                        }
+                        else if(item.Delivered == true)
+                        {
+                           <td> <input type="checkbox" disabled checked/> <p style="display:none;">Entregue</p>  </td>
+                        }
+                        
+                        @if (item.Updates != null && item.Updates.Any())
+                        {
+                            <td> <a role="button" class="btn btn-success btn-sm" asp-route-id="@item.Id" asp-controller="Packages" asp-action="Updates">Atualizações</a> </td>
+                        }
+                        else
+                        {
+                             <td> <a role="button" class="btn btn-secondary btn-sm" asp-route-id="@item.Id" asp-controller="Packages" asp-action="Updates">Atualizações</a> </td>
+                        }
+
+                       <td>
+                            @if (item.Updates != null && item.Updates.Any())
+                            {
+                                <a role="button" class="btn btn-secondary btn-sm" style="min-width:70px;">Editar</a>
+                            }
+                            else
+                            {
+                                  <a role="button" class="btn btn-warning btn-sm" style="min-width:70px;" asp-controller="Packages" asp-action="Editar" asp-route-code="@item.Code">Editar</a> 
+                            }
+
+
+                          @if (item.Updates != null && item.Updates.Any())
+                            {
+                                <a role="button" class="btn btn-secondary btn-sm" name="id">Apagar</a>
+                            }
+                            else
+                            {
+                                 <a role="button" class="btn btn-danger btn-sm btn-block" name="id" asp-route-code="@item.Code" asp-for="@item.Id" asp-controller="Packages" asp-action="Apagar">Apagar</a> 
+                            }
+
+                      </td>
+                    </tr>
+                }
+            }
+
+
+  </tbody>
+</table>
+</div>
+
+

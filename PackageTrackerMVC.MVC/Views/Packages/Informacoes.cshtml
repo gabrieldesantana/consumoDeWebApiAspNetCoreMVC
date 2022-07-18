@@ -1,0 +1,60 @@
+﻿@model PackageViewModel
+
+@{
+    ViewData["Title"] = "Atualizações do Pacote";
+}
+
+<script type="text/javascript">
+
+</script>
+
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Title</h1>
+    @if(Model.Delivered == true)
+    {
+        <button type="button" disabled class="btn btn-success">Pacote entregue</button>
+    }
+    else if(!Model.Delivered == true)
+    {
+         <button type="button" disabled class="btn btn-secondary">Pacote não entregue</button>
+    }
+   
+</div>
+
+
+<input type="hidden" value=@Model.Id/>
+
+
+<table class="table table-dark mt-2" id="UpdatesTable">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Id do Pacote</th>
+      <th scope="col">Status</th>
+      <th scope="col">Data da atualização</th>
+    </tr>
+  </thead>
+  <tbody>
+
+@if (Model.Updates != null && Model.Updates.Any())
+{
+    foreach (var item in Model.Updates)
+            {
+                    <tr>
+                      <th scope="row">@item.Id</th>
+                      <td>@item.PackageId</td>
+                      <td>@item.Status</td>
+                      <td>@item.UpdateDate</td>                  
+                    </tr>
+            }
+        }
+
+
+
+  </tbody>
+</table>
+
+<div class="d-grid">
+    <a role="button" class="btn btn-secondary mt-2" asp-controller="Packages" asp-action="Index">Voltar</a>
+</div>
